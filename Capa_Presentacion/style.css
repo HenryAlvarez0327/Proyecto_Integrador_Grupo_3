@@ -1,0 +1,126 @@
+body,html{
+font-family: Arial, Helvetica, sans-serif;
+height: 100%;
+width: 100vw;
+display: flex;
+align-items: center;
+justify-content: center;
+align-items: center;
+background: url('../Src/imgs/Fondo1.jpg') center center;
+background-size: cover;
+}
+.contenedor {
+text-align: center;
+padding: 20px;
+background-color: #FFFBE6;
+border-radius:10px;
+box-shadow:0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.boton-redireccion{
+    background-color: red;
+    color:white;
+    padding: 10px 20px;
+    display: inline-block;
+    margin-top: 5px;
+    text-decoration: none;
+}
+body.inventario {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 40px 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.contenedor-inventario {
+    width: 90%;
+    max-width: 800px;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.1);
+}
+
+h1, h2 {
+    text-align: center;
+    color: #0d6efd;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+form label {
+    font-weight: bold;
+}
+
+form input {
+    padding: 8px;
+    font-size: 14px;
+}
+
+form button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #218838;
+}
+
+.mensaje {
+    text-align: center;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.mensaje.exito {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.mensaje.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+th {
+    background-color: #0d6efd;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+.boton-volver {
+    background-color: #0d6efd;
+    color: rgb(46, 5, 5);
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
