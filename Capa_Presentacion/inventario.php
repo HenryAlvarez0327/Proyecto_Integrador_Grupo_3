@@ -1,6 +1,8 @@
 <?php
 require_once '../Capa_Negocios/InventarioControlador.php';
-
+require_once '../Capa_Servicios/StockBajoServicio.php';
+$stockBajoServicio = new StockBajoServicio();
+$productosBajoStock = $stockBajoServicio->obtenerProductosBajoStock(5);
 $controlador = new InventarioControlador();
 
 if (isset($_GET['eliminar'])) {
@@ -87,7 +89,31 @@ $productos = $controlador->listarProductos();
         <?php endif; ?>
         </tbody>
 </div>
+
     </table>
+    <h2>🔴 Productos con bajo stock</h2>
+
+<?php if (!empty($productosBajoStock)): ?>
+    <table border="1" cellpadding="8" cellspacing="0">
+        <thead>
+            <tr>
+                <th>ID</th><th>Nombre</th><th>Stock</th><th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($productosBajoStock as $producto): ?>
+                <tr style="background-color: #fff0f0;">
+                    <td><?= htmlspecialchars($producto['id']) ?></td>
+                    <td><?= htmlspecialchars($producto['nombre']) ?></td>
+                    <td><?= htmlspecialchars($producto['stock']) ?></td>
+                    <td><?= number_format($producto['precio'], 2) ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
+    <p style="color: green;">✅ Todos los productos tienen stock suficiente.</p>
+<?php endif; ?>
     <div style="text-align: center; margin-top: 20px;">
     <a href="index.html" class="boton-redireccion">Volver al inicio</a>
 </div>
