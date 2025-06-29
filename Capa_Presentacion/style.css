@@ -124,3 +124,24 @@ tr:nth-child(even) {
     border-radius: 5px;
     font-weight: bold;
 }
+.alerta-stock-bajo {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+.boton-redireccion {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+}
+.boton-redireccion:hover {
+    background-color: #0056b3;
+}

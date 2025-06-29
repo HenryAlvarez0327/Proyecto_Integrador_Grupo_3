@@ -1,16 +1,20 @@
 <?php
 require_once '../Capa_Negocios/InventarioControlador.php';
 require_once '../Capa_Servicios/StockBajoServicio.php';
+
 $stockBajoServicio = new StockBajoServicio();
 $productosBajoStock = $stockBajoServicio->obtenerProductosBajoStock(5);
+
 $controlador = new InventarioControlador();
 
+// Eliminar producto
 if (isset($_GET['eliminar'])) {
     $idEliminar = intval($_GET['eliminar']);
     $controlador->eliminarProducto($idEliminar);
-    header("Location: inventario.php"); 
+    header("Location: inventario.php");
     exit;
 }
+
 // Agregar producto
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar'])) {
     $nombre = $_POST['nombre'] ?? '';
@@ -19,12 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar'])) {
 
     $resultado = $controlador->agregarProducto($nombre, $stock, $precio);
     $mensaje = $resultado ? "✅ Producto agregado correctamente." : "❌ Error al agregar producto.";
-}
-
-// Eliminar producto
-if (isset($_GET['eliminar'])) {
-    $idEliminar = intval($_GET['eliminar']);
-    $controlador->eliminarProducto($idEliminar);
 }
 
 $productos = $controlador->listarProductos();
@@ -40,6 +38,12 @@ $productos = $controlador->listarProductos();
 <body class="inventario">
 <div class="contenedor-inventario">
     <h1>Inventario de Productos</h1>
+
+    <?php if (!empty($productosBajoStock)): ?>
+        <div class="alerta-stock-bajo">
+            ⚠️ ¡Atención! Hay productos con stock bajo. Revisa al final de la página.
+        </div>
+    <?php endif; ?>
 
     <?php if (isset($mensaje)): ?>
         <div class="mensaje <?= $resultado ? 'exito' : 'error' ?>">
@@ -59,19 +63,19 @@ $productos = $controlador->listarProductos();
 
         <button type="submit" name="agregar">Agregar Producto</button>
     </form>
+
     <h2>Lista de Productos</h2>
 
     <table>
-
         <thead>
         <tr>
-            <th>ID</th><th>NOMBRE</th><th>STOCK</th><th>PRECIO</th><th>ACCIONES</th>
+            <th>ID</th><th>Nombre</th><th>Stock</th><th>Precio</th><th>Acciones</th>
         </tr>
         </thead>
         <tbody>
         <?php if (!empty($productos)): ?>
             <?php foreach ($productos as $producto): ?>
-                <tr>
+                <tr<?= $producto->getStock() < 5 ? ' style="background-color:#ffe6e6;"' : '' ?>>
                     <td><?= htmlspecialchars($producto->getId()) ?></td>
                     <td><?= htmlspecialchars($producto->getNombre()) ?></td>
                     <td><?= htmlspecialchars($producto->getStock()) ?></td>
@@ -79,43 +83,45 @@ $productos = $controlador->listarProductos();
                     <td>
                         <a href="editar_producto.php?id=<?= $producto->getId() ?>">Editar</a> |
                         <a href="?eliminar=<?= $producto->getId() ?>" onclick="return confirm('¿Eliminar este producto?')">Eliminar</a>
-                        
                     </td>
-                    
                 </tr>
             <?php endforeach; ?>
         <?php else: ?>
             <tr><td colspan="5">No hay productos registrados.</td></tr>
         <?php endif; ?>
         </tbody>
-</div>
-
     </table>
+
     <h2>🔴 Productos con bajo stock</h2>
 
-<?php if (!empty($productosBajoStock)): ?>
-    <table border="1" cellpadding="8" cellspacing="0">
-        <thead>
-            <tr>
-                <th>ID</th><th>Nombre</th><th>Stock</th><th>Precio</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($productosBajoStock as $producto): ?>
-                <tr style="background-color: #fff0f0;">
-                    <td><?= htmlspecialchars($producto['id']) ?></td>
-                    <td><?= htmlspecialchars($producto['nombre']) ?></td>
-                    <td><?= htmlspecialchars($producto['stock']) ?></td>
-                    <td><?= number_format($producto['precio'], 2) ?></td>
+    <?php if (!empty($productosBajoStock)): ?>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th><th>Nombre</th><th>Stock</th><th>Precio</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-<?php else: ?>
-    <p style="color: green;">✅ Todos los productos tienen stock suficiente.</p>
-<?php endif; ?>
+            </thead>
+            <tbody>
+                <?php foreach ($productosBajoStock as $producto): ?>
+                    <tr style="background-color: #fff0f0;">
+                        <td><?= htmlspecialchars($producto['id']) ?></td>
+                        <td><?= htmlspecialchars($producto['nombre']) ?></td>
+                        <td><?= htmlspecialchars($producto['stock']) ?></td>
+                        <td>$<?= number_format($producto['precio'], 2) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p style="color: green;">✅ Todos los productos tienen stock suficiente.</p>
+    <?php endif; ?>
+
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="index.html" class="boton-redireccion">Volver al inicio</a>
+    </div>
     <div style="text-align: center; margin-top: 20px;">
-    <a href="index.html" class="boton-redireccion">Volver al inicio</a>
+    <a href="../Capa_Servicios/generar_reporte.php" class="boton-redireccion" target="_blank">📄 Generar Reporte PDF</a>
+</div>
 </div>
 </body>
 </html>
