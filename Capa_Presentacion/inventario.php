@@ -1,7 +1,12 @@
 <?php
 require_once '../Capa_Negocios/InventarioControlador.php';
 require_once '../Capa_Servicios/StockBajoServicio.php';
+session_start();
 
+if (!isset($_SESSION['usuario'])) {
+    header('Location: login.php');
+    exit;
+}
 $stockBajoServicio = new StockBajoServicio();
 $productosBajoStock = $stockBajoServicio->obtenerProductosBajoStock(5);
 
@@ -121,6 +126,9 @@ $productos = $controlador->listarProductos();
     </div>
     <div style="text-align: center; margin-top: 20px;">
     <a href="../Capa_Servicios/generar_reporte.php" class="boton-redireccion" target="_blank">📄 Generar Reporte PDF</a>
+    <div style="text-align: right;">
+    <a href="logout.php" style="color:red; text-decoration:none;">Cerrar sesión</a>
+</div>
 </div>
 </div>
 </body>
